@@ -3,6 +3,7 @@ import Employee from '../models/Employee.js';
 import { generateReference } from '../utils/helpers.js';
 import logger from '../config/logger.js';
 import moment from 'moment';
+import razorpayService from '../services/razorpayService.js';
 
 // @desc    Generate payroll for an employee
 // @route   POST /api/payroll/generate/:employeeId
@@ -669,6 +670,245 @@ export const deletePayroll = async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to delete payroll'
+    });
+  }
+};
+
+// @desc    Initiate bulk payout via RazorpayX
+// @route   POST /api/payroll/bulk-payout
+// @access  Admin only
+export const initiateBulkPayout = async (req, res) => {
+  try {
+    if (!razorpayService.enabled) {
+      return res.status(503).json({
+        success: false,
+        error: 'RazorpayX is not configured on the server',
+        details: 'Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in the server environment to enable payouts.'
+      });
+    }
+    const { payrollIds, payoutMode = 'IMPS' } = req.body;
+
+    if (!payrollIds || !Array.isArray(payrollIds) || payrollIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Please provide valid payroll IDs'
+      });
+    }
+
+    // Fetch payrolls with employee and bank details
+    const payrolls = await Payroll.find({
+      _id: { $in: payrollIds },
+      status: 'pending'
+    })
+    .populate({
+      path: 'employee',
+      populate: {
+        path: 'user',
+        select: 'name email phone'
+      }
+    });
+
+    if (payrolls.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'No pending payrolls found for the provided IDs'
+      });
+    }
+
+    // Prepare payout data
+    const payoutData = [];
+    const errors = [];
+
+    for (const payroll of payrolls) {
+      const employee = payroll.employee;
+      
+      // Check if RazorpayX is set up for this employee
+      if (!employee.razorpayData?.isRazorpaySetup || !employee.razorpayData?.fundAccountId) {
+        errors.push({
+          payrollId: payroll._id,
+          employeeName: employee.user.name,
+          error: 'RazorpayX not configured for this employee'
+        });
+        continue;
+      }
+
+      // Check if net salary is positive
+      if (payroll.netSalary <= 0) {
+        errors.push({
+          payrollId: payroll._id,
+          employeeName: employee.user.name,
+          error: 'Net salary must be positive'
+        });
+        continue;
+      }
+
+      payoutData.push({
+        fundAccountId: employee.razorpayData.fundAccountId,
+        amount: payroll.netSalary,
+        mode: payoutMode,
+        referenceId: `PAY_${payroll.payrollNumber}`,
+        narration: `Salary for ${moment(payroll.payPeriodStart).format('MMM YYYY')} - ${employee.user.name}`,
+        notes: {
+          payrollId: payroll._id.toString(),
+          employeeId: employee._id.toString(),
+          payPeriod: `${moment(payroll.payPeriodStart).format('MMM YYYY')}`,
+          employeeName: employee.user.name,
+          employeeCode: employee.employeeCode
+        }
+      });
+    }
+
+    if (payoutData.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'No valid payrolls found for payout',
+        errors
+      });
+    }
+
+    // Initiate bulk payouts via RazorpayX
+    logger.info(`Initiating bulk payout for ${payoutData.length} employees`, {
+      initiatedBy: req.user._id,
+      payrollCount: payoutData.length
+    });
+
+    const bulkPayoutResult = await razorpayService.createBulkPayouts(payoutData);
+
+    // Update payroll status for successful payouts
+    const successfulPayouts = bulkPayoutResult.successful;
+    const failedPayouts = bulkPayoutResult.failed;
+
+    // Update status for successful payouts
+    for (let i = 0; i < successfulPayouts.length; i++) {
+      const payout = successfulPayouts[i];
+      const originalPayoutData = payoutData[i];
+      
+      if (payout && payout.id) {
+        await Payroll.findOneAndUpdate(
+          { payrollNumber: originalPayoutData.referenceId.replace('PAY_', '') },
+          {
+            status: 'processing',
+            paymentDate: new Date(),
+            paymentMethod: 'razorpayx',
+            transactionId: payout.id,
+            razorpayPayoutId: payout.id,
+            notes: `Payout initiated via RazorpayX - ${payout.id}`
+          }
+        );
+      }
+    }
+
+    // Log results
+    logger.info(`Bulk payout completed`, {
+      initiatedBy: req.user._id,
+      successful: successfulPayouts.length,
+      failed: failedPayouts.length + errors.length,
+      totalAmount: payoutData.reduce((sum, payout) => sum + payout.amount, 0)
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Bulk payout initiated',
+      data: {
+        totalProcessed: payoutData.length,
+        successful: successfulPayouts.length,
+        failed: failedPayouts.length + errors.length,
+        successfulPayouts: successfulPayouts.map((payout, index) => ({
+          payoutId: payout.id,
+          amount: payoutData[index].amount,
+          status: payout.status,
+          referenceId: payoutData[index].referenceId
+        })),
+        failedPayouts: [...failedPayouts, ...errors],
+        totalAmount: payoutData.reduce((sum, payout) => sum + payout.amount, 0)
+      }
+    });
+
+  } catch (error) {
+    logger.error('Error in initiateBulkPayout:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to initiate bulk payout',
+      details: error.message
+    });
+  }
+};
+
+// @desc    Get payout status from RazorpayX
+// @route   GET /api/payroll/payout-status/:payoutId
+// @access  Admin/HR
+export const getPayoutStatus = async (req, res) => {
+  try {
+    if (!razorpayService.enabled) {
+      return res.status(503).json({
+        success: false,
+        error: 'RazorpayX is not configured on the server',
+        details: 'Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in the server environment to enable payouts.'
+      });
+    }
+    const { payoutId } = req.params;
+
+    const payoutStatus = await razorpayService.getPayoutStatus(payoutId);
+
+    // Update local payroll status based on RazorpayX status
+    if (payoutStatus.status === 'processed') {
+      await Payroll.findOneAndUpdate(
+        { razorpayPayoutId: payoutId },
+        { 
+          status: 'processed',
+          notes: `Payout completed via RazorpayX - ${payoutId}`
+        }
+      );
+    } else if (payoutStatus.status === 'failed' || payoutStatus.status === 'cancelled') {
+      await Payroll.findOneAndUpdate(
+        { razorpayPayoutId: payoutId },
+        { 
+          status: 'failed',
+          notes: `Payout failed via RazorpayX - ${payoutId}. Reason: ${payoutStatus.failure_reason || 'Unknown'}`
+        }
+      );
+    }
+
+    res.status(200).json({
+      success: true,
+      data: payoutStatus
+    });
+
+  } catch (error) {
+    logger.error('Error in getPayoutStatus:', { message: error?.message, stack: error?.stack, error });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch payout status',
+      details: error.message
+    });
+  }
+};
+
+// @desc    Get RazorpayX account balance
+// @route   GET /api/payroll/account-balance
+// @access  Admin only
+export const getAccountBalance = async (req, res) => {
+  try {
+    if (!razorpayService.enabled) {
+      return res.status(503).json({
+        success: false,
+        error: 'RazorpayX is not configured on the server',
+        details: 'Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in the server environment to enable payouts.'
+      });
+    }
+    const balance = await razorpayService.getAccountBalance();
+
+    res.status(200).json({
+      success: true,
+      data: balance
+    });
+
+  } catch (error) {
+    logger.error('Error in getAccountBalance:', { message: error?.message, stack: error?.stack, error });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch account balance',
+      details: error.message
     });
   }
 };

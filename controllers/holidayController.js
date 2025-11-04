@@ -143,7 +143,7 @@ export const getHolidays = async (req, res) => {
 
     const holidays = await Holiday.find(filter)
       .populate('createdBy', 'name email')
-      .populate('applicableDepartments', 'name code')
+      .populate('applicableDepartments', 'name')
       .sort(sort)
       .skip(skip)
       .limit(parseInt(limit));
@@ -198,7 +198,7 @@ export const getHolidayById = async (req, res) => {
 
     const holiday = await Holiday.findById(id)
       .populate('createdBy', 'name email')
-      .populate('applicableDepartments', 'name code');
+      .populate('applicableDepartments', 'name');
 
     if (!holiday) {
       return res.status(404).json({
@@ -273,7 +273,7 @@ export const updateHoliday = async (req, res) => {
       { ...updates, updatedAt: new Date() },
       { new: true, runValidators: true }
     ).populate('createdBy', 'name email')
-     .populate('applicableDepartments', 'name code');
+     .populate('applicableDepartments', 'name');
 
     logger.info(`Holiday updated successfully`, {
       holidayId: id,
@@ -313,7 +313,7 @@ export const getUpcomingHolidays = async (req, res) => {
         $lte: endDate
       }
     })
-    .populate('applicableDepartments', 'name code')
+    .populate('applicableDepartments', 'name')
     .sort({ date: 1 })
     .limit(parseInt(limit));
 
@@ -359,7 +359,7 @@ export const getHolidayCalendar = async (req, res) => {
         $lte: endDate
       }
     })
-    .populate('applicableDepartments', 'name code')
+    .populate('applicableDepartments', 'name')
     .sort({ date: 1 });
 
     // Group holidays by month

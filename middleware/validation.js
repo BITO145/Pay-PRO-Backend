@@ -25,8 +25,8 @@ export const userSchemas = {
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
     role: Joi.string().valid('admin', 'hr', 'employee').default('employee'),
-    phone: Joi.string().pattern(/^\+?[\d\s-()]+$/),
-    address: Joi.string().max(200)
+    phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).trim().empty('').optional(),
+    address: Joi.string().max(200).trim().empty('').optional()
   }),
   
   login: Joi.object({
@@ -35,9 +35,9 @@ export const userSchemas = {
   }),
   
   updateProfile: Joi.object({
-    name: Joi.string().min(2).max(50),
-    phone: Joi.string().pattern(/^\+?[\d\s-()]+$/),
-    address: Joi.string().max(200)
+    name: Joi.string().min(2).max(50).trim().empty('').optional(),
+    phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).trim().empty('').optional(),
+    address: Joi.string().max(200).trim().empty('').optional()
   }),
   
   changePassword: Joi.object({
@@ -52,61 +52,109 @@ export const employeeSchemas = {
   create: Joi.object({
     name: Joi.string().min(2).max(50).required(),
     email: Joi.string().email().required(),
-    employeeId: Joi.string().min(3).max(20).required(),
-    department: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).required(),
-    position: Joi.string().min(2).max(50).required(),
+    // department can be an existing ObjectId or an object to create inline
+    department: Joi.alternatives().try(
+      Joi.string().pattern(/^[0-9a-fA-F]{24}$/),
+      Joi.object({
+        name: Joi.string().min(2).max(100).required(),
+        description: Joi.string().max(500).trim().empty('').optional(),
+        budget: Joi.number().min(0).optional()
+      })
+    ).required(),
+    designation: Joi.string().min(2).max(50).required(),
     dateOfJoining: Joi.date().required(),
-    employmentType: Joi.string().valid('full-time', 'part-time', 'contract', 'intern').default('full-time'),
+    employmentType: Joi.string().valid('full-time', 'part-time', 'contract', 'intern', 'permanent').default('full-time'),
     workLocation: Joi.string().valid('office', 'remote', 'hybrid').default('office'),
     salary: Joi.object({
       basic: Joi.number().min(0).required(),
       hra: Joi.number().min(0).default(0),
       allowance: Joi.number().min(0).default(0),
-      deductions: Joi.number().min(0).default(0)
-    }).required(),
-    phone: Joi.string().pattern(/^\+?[\d\s-()]+$/),
-    address: Joi.string().max(200),
+      deductions: Joi.number().min(0).default(0),
+      providentFund: Joi.number().min(0).default(0),
+      professionalTax: Joi.number().min(0).default(0),
+      incomeTax: Joi.number().min(0).default(0)
+    }).optional(),
+    phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).trim().empty('').optional(),
+    address: Joi.string().max(200).trim().empty('').optional(),
     personalDetails: Joi.object({
-      dateOfBirth: Joi.date(),
-      gender: Joi.string().valid('male', 'female', 'other'),
-      maritalStatus: Joi.string().valid('single', 'married', 'divorced', 'widowed'),
-      bloodGroup: Joi.string(),
+      dateOfBirth: Joi.date().empty('').optional(),
+      gender: Joi.string().valid('male', 'female', 'other').trim().empty('').optional(),
+      maritalStatus: Joi.string().valid('single', 'married', 'divorced', 'widowed').trim().empty('').optional(),
+      bloodGroup: Joi.string().trim().empty('').optional(),
       emergencyContact: Joi.object({
-        name: Joi.string(),
-        relationship: Joi.string(),
-        phone: Joi.string().pattern(/^\+?[\d\s-()]+$/)
-      })
-    })
+        name: Joi.string().trim().empty('').optional(),
+        relationship: Joi.string().trim().empty('').optional(),
+        phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).trim().empty('').optional()
+      }).optional()
+    }).optional(),
+    bankDetails: Joi.object({
+      accountHolderName: Joi.string().trim().empty('').optional(),
+      accountNumber: Joi.string().trim().empty('').optional(),
+      bankName: Joi.string().trim().empty('').optional(),
+      ifscCode: Joi.string().trim().empty('').optional(),
+      upiId: Joi.string().trim().empty('').optional(),
+      payoutMethod: Joi.string().valid('bank_account', 'upi').optional()
+    }).optional(),
   }),
   
   update: Joi.object({
-    department: Joi.string().pattern(/^[0-9a-fA-F]{24}$/),
-    position: Joi.string().min(2).max(50),
-    employmentType: Joi.string().valid('full-time', 'part-time', 'contract', 'intern'),
-    workLocation: Joi.string().valid('office', 'remote', 'hybrid'),
+    department: Joi.alternatives().try(
+      Joi.string().pattern(/^[0-9a-fA-F]{24}$/),
+      Joi.object({
+        name: Joi.string().min(2).max(100).required(),
+        description: Joi.string().max(500).trim().empty('').optional(),
+        budget: Joi.number().min(0).optional()
+      })
+    ),
+    designation: Joi.string().min(2).max(50).trim().empty('').optional(),
+    employmentType: Joi.string().valid('full-time', 'part-time', 'contract', 'intern', 'permanent').trim().empty('').optional(),
+    workLocation: Joi.string().valid('office', 'remote', 'hybrid').trim().empty('').optional(),
     salary: Joi.object({
       basic: Joi.number().min(0),
       hra: Joi.number().min(0),
-        phone: Joi.string().pattern(/^\+?[\d\s-()]+$/)
-      })
-    })
-  }
+      allowance: Joi.number().min(0),
+      deductions: Joi.number().min(0),
+      providentFund: Joi.number().min(0),
+      professionalTax: Joi.number().min(0),
+      incomeTax: Joi.number().min(0)
+    }).optional(),
+    phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).trim().empty('').optional(),
+    address: Joi.string().max(200).trim().empty('').optional(),
+    personalDetails: Joi.object({
+      dateOfBirth: Joi.date().empty('').optional(),
+      gender: Joi.string().valid('male', 'female', 'other').trim().empty('').optional(),
+      maritalStatus: Joi.string().valid('single', 'married', 'divorced', 'widowed').trim().empty('').optional(),
+      bloodGroup: Joi.string().trim().empty('').optional(),
+      emergencyContact: Joi.object({
+        name: Joi.string().trim().empty('').optional(),
+        relationship: Joi.string().trim().empty('').optional(),
+        phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).trim().empty('').optional()
+      }).optional()
+    }).optional(),
+    bankDetails: Joi.object({
+      accountHolderName: Joi.string().trim().empty('').optional(),
+      accountNumber: Joi.string().trim().empty('').optional(),
+      bankName: Joi.string().trim().empty('').optional(),
+      ifscCode: Joi.string().trim().empty('').optional(),
+      upiId: Joi.string().trim().empty('').optional(),
+      payoutMethod: Joi.string().valid('bank_account', 'upi').optional()
+    }).optional()
+  })
+}
 
 // Department validation schemas
 export const departmentSchemas = {
   create: Joi.object({
     name: Joi.string().min(2).max(100).required(),
-    code: Joi.string().min(2).max(10).required(),
-    description: Joi.string().max(500),
-    head: Joi.string().pattern(/^[0-9a-fA-F]{24}$/),
+    description: Joi.string().max(500).trim().empty('').optional(),
+    headOfDepartment: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).empty('').optional(),
     budget: Joi.number().min(0)
   }),
   
   update: Joi.object({
-    name: Joi.string().min(2).max(100),
-    code: Joi.string().min(2).max(10),
-    description: Joi.string().max(500),
-    head: Joi.string().pattern(/^[0-9a-fA-F]{24}$/),
+    name: Joi.string().min(2).max(100).trim().empty('').optional(),
+    description: Joi.string().max(500).trim().empty('').optional(),
+    headOfDepartment: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).empty('').optional(),
     budget: Joi.number().min(0),
     isActive: Joi.boolean()
   })
@@ -118,18 +166,18 @@ export const attendanceSchemas = {
     location: Joi.object({
       latitude: Joi.number().min(-90).max(90),
       longitude: Joi.number().min(-180).max(180),
-      address: Joi.string().max(200)
+      address: Joi.string().max(200).trim().empty('').optional()
     }),
-    notes: Joi.string().max(200)
+    notes: Joi.string().max(200).trim().empty('').optional()
   }),
   
   checkOut: Joi.object({
     location: Joi.object({
       latitude: Joi.number().min(-90).max(90),
       longitude: Joi.number().min(-180).max(180),
-      address: Joi.string().max(200)
+      address: Joi.string().max(200).trim().empty('').optional()
     }),
-    notes: Joi.string().max(200)
+    notes: Joi.string().max(200).trim().empty('').optional()
   }),
   
   manual: Joi.object({
@@ -138,14 +186,14 @@ export const attendanceSchemas = {
     checkIn: Joi.date().required(),
     checkOut: Joi.date().greater(Joi.ref('checkIn')),
     status: Joi.string().valid('present', 'late', 'half-day'),
-    notes: Joi.string().max(200)
+    notes: Joi.string().max(200).trim().empty('').optional()
   }),
   
   update: Joi.object({
-    checkIn: Joi.date(),
-    checkOut: Joi.date(),
-    status: Joi.string().valid('present', 'absent', 'late', 'half-day'),
-    notes: Joi.string().max(200)
+    checkIn: Joi.date().empty('').optional(),
+    checkOut: Joi.date().empty('').optional(),
+    status: Joi.string().valid('present', 'absent', 'late', 'half-day').trim().empty('').optional(),
+    notes: Joi.string().max(200).trim().empty('').optional()
   })
 };
 
@@ -163,29 +211,29 @@ export const leaveSchemas = {
       otherwise: Joi.forbidden()
     }),
     emergencyContact: Joi.object({
-      name: Joi.string(),
-      phone: Joi.string().pattern(/^\+?[\d\s-()]+$/),
-      relationship: Joi.string()
+      name: Joi.string().trim().empty('').optional(),
+      phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).trim().empty('').optional(),
+      relationship: Joi.string().trim().empty('').optional()
     })
   }),
   
   update: Joi.object({
-    type: Joi.string().valid('sick', 'casual', 'annual', 'maternity', 'paternity', 'emergency'),
-    startDate: Joi.date(),
-    endDate: Joi.date(),
-    reason: Joi.string().min(10).max(500),
+    type: Joi.string().valid('sick', 'casual', 'annual', 'maternity', 'paternity', 'emergency').trim().empty('').optional(),
+    startDate: Joi.date().empty('').optional(),
+    endDate: Joi.date().empty('').optional(),
+    reason: Joi.string().min(10).max(500).trim().empty('').optional(),
     isHalfDay: Joi.boolean(),
-    halfDayType: Joi.string().valid('first-half', 'second-half'),
+    halfDayType: Joi.string().valid('first-half', 'second-half').trim().empty('').optional(),
     emergencyContact: Joi.object({
-      name: Joi.string(),
-      phone: Joi.string().pattern(/^\+?[\d\s-()]+$/),
-      relationship: Joi.string()
+      name: Joi.string().trim().empty('').optional(),
+      phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).trim().empty('').optional(),
+      relationship: Joi.string().trim().empty('').optional()
     })
   }),
   
   review: Joi.object({
     status: Joi.string().valid('approved', 'rejected').required(),
-    reviewNotes: Joi.string().max(500)
+    reviewNotes: Joi.string().max(500).trim().empty('').optional()
   })
 };
 
@@ -217,7 +265,7 @@ export const payrollSchemas = {
       })
     ).default([]),
     overtimeHours: Joi.number().min(0).default(0),
-    notes: Joi.string().max(500)
+    notes: Joi.string().max(500).trim().empty('').optional()
   }),
   
   update: Joi.object({
@@ -244,7 +292,7 @@ export const payrollSchemas = {
       })
     ),
     overtimeHours: Joi.number().min(0),
-    notes: Joi.string().max(500)
+    notes: Joi.string().max(500).trim().empty('').optional()
   })
 };
 
@@ -264,15 +312,15 @@ export const announcementSchemas = {
     ).default([]),
     isEmailNotification: Joi.boolean().default(false),
     scheduledFor: Joi.date().default(new Date()),
-    expiresAt: Joi.date().greater(Joi.ref('scheduledFor'))
+    expiresAt: Joi.date().greater(Joi.ref('scheduledFor')).empty('').optional()
   }),
   
   update: Joi.object({
-    title: Joi.string().min(5).max(200),
-    content: Joi.string().min(10),
-    type: Joi.string().valid('general', 'policy', 'event', 'urgent', 'celebration'),
-    priority: Joi.string().valid('low', 'medium', 'high', 'urgent'),
-    targetAudience: Joi.string().valid('all', 'admin', 'hr', 'employee'),
+    title: Joi.string().min(5).max(200).trim().empty('').optional(),
+    content: Joi.string().min(10).trim().empty('').optional(),
+    type: Joi.string().valid('general', 'policy', 'event', 'urgent', 'celebration').trim().empty('').optional(),
+    priority: Joi.string().valid('low', 'medium', 'high', 'urgent').trim().empty('').optional(),
+    targetAudience: Joi.string().valid('all', 'admin', 'hr', 'employee').trim().empty('').optional(),
     targetDepartments: Joi.array().items(
       Joi.string().pattern(/^[0-9a-fA-F]{24}$/)
     ),
@@ -280,8 +328,8 @@ export const announcementSchemas = {
       Joi.string().pattern(/^[0-9a-fA-F]{24}$/)
     ),
     isEmailNotification: Joi.boolean(),
-    scheduledFor: Joi.date(),
-    expiresAt: Joi.date(),
+    scheduledFor: Joi.date().empty('').optional(),
+    expiresAt: Joi.date().empty('').optional(),
     isActive: Joi.boolean()
   })
 };
@@ -292,7 +340,7 @@ export const holidaySchemas = {
     name: Joi.string().min(2).max(100).required(),
     date: Joi.date().required(),
     type: Joi.string().valid('national', 'religious', 'regional', 'company').required(),
-    description: Joi.string().max(500),
+    description: Joi.string().max(500).trim().empty('').optional(),
     isRecurring: Joi.boolean().default(false),
     applicableRegions: Joi.array().items(Joi.string()).default(['all']),
     applicableDepartments: Joi.array().items(
@@ -301,10 +349,10 @@ export const holidaySchemas = {
   }),
   
   update: Joi.object({
-    name: Joi.string().min(2).max(100),
-    date: Joi.date(),
-    type: Joi.string().valid('national', 'religious', 'regional', 'company'),
-    description: Joi.string().max(500),
+    name: Joi.string().min(2).max(100).trim().empty('').optional(),
+    date: Joi.date().empty('').optional(),
+    type: Joi.string().valid('national', 'religious', 'regional', 'company').trim().empty('').optional(),
+    description: Joi.string().max(500).trim().empty('').optional(),
     isRecurring: Joi.boolean(),
     applicableRegions: Joi.array().items(Joi.string()),
     applicableDepartments: Joi.array().items(

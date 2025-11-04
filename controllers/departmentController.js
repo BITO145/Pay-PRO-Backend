@@ -7,26 +7,24 @@ import logger from '../config/logger.js';
 // @access  Admin/HR
 export const createDepartment = async (req, res) => {
   try {
-    const { name, code, description, head, budget } = req.body;
+      const { name, description, budget } = req.body;
+    const headOfDepartment = req.body.headOfDepartment || req.body.head || null;
 
-    // Check if department with same name or code exists
-    const existingDept = await Department.findOne({
-      $or: [
-        { name: { $regex: new RegExp('^' + name + '$', 'i') } },
-        { code: code.toUpperCase() }
-      ]
-    });
-
-    if (existingDept) {
-      return res.status(400).json({
-        success: false,
-        error: 'Department with this name or code already exists'
+      // Check if department with same name exists
+      const existingDept = await Department.findOne({
+        name: { $regex: new RegExp('^' + name + '$', 'i') }
       });
-    }
 
-    // Validate head if provided
-    if (head) {
-      const headEmployee = await Employee.findById(head);
+      if (existingDept) {
+        return res.status(400).json({
+          success: false,
+          error: 'Department with this name already exists'
+        });
+      }
+
+    // Validate headOfDepartment if provided
+    if (headOfDepartment) {
+      const headEmployee = await Employee.findById(headOfDepartment);
       if (!headEmployee) {
         return res.status(404).json({
           success: false,
@@ -35,26 +33,28 @@ export const createDepartment = async (req, res) => {
       }
     }
 
-    const department = new Department({
-      name,
-      code: code.toUpperCase(),
-      description,
-      head,
-      budget,
-      createdBy: req.user._id
-    });
+      const department = new Department({
+        name,
+        description,
+        headOfDepartment,
+        budget,
+        createdBy: req.user._id
+      });
 
     await department.save();
 
-    // Populate head details
-    await department.populate('head', 'name email employeeId');
-
-    logger.info(`Department created successfully`, {
-      departmentId: department._id,
-      name: department.name,
-      code: department.code,
-      createdBy: req.user._id
+  // Populate head of department details
+    await department.populate({
+      path: 'headOfDepartment',
+      select: 'employeeCode user',
+      populate: { path: 'user', select: 'name email' }
     });
+
+      logger.info(`Department created successfully`, {
+        departmentId: department._id,
+        name: department.name,
+        createdBy: req.user._id
+      });
 
     res.status(201).json({
       success: true,
@@ -93,11 +93,10 @@ export const getDepartments = async (req, res) => {
     }
 
     if (search) {
-      filter.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { code: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
-      ];
+        filter.$or = [
+          { name: { $regex: search, $options: 'i' } },
+          { description: { $regex: search, $options: 'i' } }
+        ];
     }
 
     // Build sort object
@@ -108,8 +107,11 @@ export const getDepartments = async (req, res) => {
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
     const departments = await Department.find(filter)
-      .populate('head', 'name email employeeId')
-      .populate('createdBy', 'name email')
+      .populate({
+        path: 'headOfDepartment',
+        select: 'employeeCode user',
+        populate: { path: 'user', select: 'name email' }
+      })
       .sort(sort)
       .skip(skip)
       .limit(parseInt(limit));
@@ -121,7 +123,7 @@ export const getDepartments = async (req, res) => {
       departments.map(async (dept) => {
         const employeeCount = await Employee.countDocuments({ 
           department: dept._id,
-          isActive: true 
+          status: 'active'
         });
         
         return {
@@ -159,8 +161,11 @@ export const getDepartmentById = async (req, res) => {
     const { id } = req.params;
 
     const department = await Department.findById(id)
-      .populate('head', 'name email employeeId position')
-      .populate('createdBy', 'name email');
+      .populate({
+        path: 'headOfDepartment',
+        select: 'employeeCode user position',
+        populate: { path: 'user', select: 'name email' }
+      })
 
     if (!department) {
       return res.status(404).json({
@@ -173,7 +178,9 @@ export const getDepartmentById = async (req, res) => {
     const employees = await Employee.find({ 
       department: id,
       isActive: true 
-    }).select('name email employeeId position');
+    })
+    .select('employeeCode user position dateOfJoining isActive')
+    .populate({ path: 'user', select: 'name email' });
 
     // Get department statistics
     const stats = {
@@ -219,33 +226,25 @@ export const updateDepartment = async (req, res) => {
       });
     }
 
-    // Check if name or code conflicts with other departments
-    if (updates.name || updates.code) {
-      const conflictFilter = {
-        _id: { $ne: id }
-      };
-
+      // Check if name conflicts with other departments
       if (updates.name) {
-        conflictFilter.name = { $regex: new RegExp('^' + updates.name + '$', 'i') };
-      }
-
-      if (updates.code) {
-        conflictFilter.code = updates.code.toUpperCase();
-        updates.code = updates.code.toUpperCase();
-      }
-
-      const conflictingDept = await Department.findOne(conflictFilter);
-      if (conflictingDept) {
-        return res.status(400).json({
-          success: false,
-          error: 'Department with this name or code already exists'
+        const conflictingDept = await Department.findOne({
+          _id: { $ne: id },
+          name: { $regex: new RegExp('^' + updates.name + '$', 'i') }
         });
+        if (conflictingDept) {
+          return res.status(400).json({
+            success: false,
+            error: 'Department with this name already exists'
+          });
+        }
       }
-    }
 
-    // Validate new head if provided
-    if (updates.head) {
-      const headEmployee = await Employee.findById(updates.head);
+    // Normalize and validate new headOfDepartment if provided
+    if (updates.head || updates.headOfDepartment) {
+      updates.headOfDepartment = updates.headOfDepartment || updates.head;
+      delete updates.head;
+      const headEmployee = await Employee.findById(updates.headOfDepartment);
       if (!headEmployee) {
         return res.status(404).json({
           success: false,
@@ -258,8 +257,11 @@ export const updateDepartment = async (req, res) => {
       id,
       { ...updates, updatedAt: new Date() },
       { new: true, runValidators: true }
-    ).populate('head', 'name email employeeId')
-     .populate('createdBy', 'name email');
+    ).populate({
+      path: 'headOfDepartment',
+      select: 'employeeCode user',
+      populate: { path: 'user', select: 'name email' }
+    })
 
     logger.info(`Department updated successfully`, {
       departmentId: id,
@@ -374,18 +376,18 @@ export const getDepartmentEmployees = async (req, res) => {
 
     if (search) {
       filter.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-        { employeeId: { $regex: search, $options: 'i' } },
+        { employeeCode: { $regex: search, $options: 'i' } },
         { position: { $regex: search, $options: 'i' } }
       ];
+      // Note: searching nested user.name requires a $lookup or denormalized field; keeping search to employeeCode/position for now
     }
 
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
     const employees = await Employee.find(filter)
-      .select('name email employeeId position dateOfJoining isActive')
-      .sort({ name: 1 })
+      .select('employeeCode user position dateOfJoining isActive')
+      .populate({ path: 'user', select: 'name email' })
+      .sort({ employeeCode: 1 })
       .skip(skip)
       .limit(parseInt(limit));
 
@@ -422,8 +424,7 @@ export const getDepartmentEmployees = async (req, res) => {
       },
       department: {
         id: department._id,
-        name: department.name,
-        code: department.code
+        name: department.name
       }
     });
 
@@ -458,7 +459,6 @@ export const getDepartmentStats = async (req, res) => {
       {
         $project: {
           name: 1,
-          code: 1,
           isActive: 1,
           budget: 1,
           totalEmployees: { $size: '$employees' },

@@ -1,10 +1,12 @@
 import Employee from '../models/Employee.js';
 import User from '../models/User.js';
 import Department from '../models/Department.js';
+import mongoose from 'mongoose';
 import { asyncHandler } from '../middleware/errorHandler.js';
 import { dataLogger } from '../config/logger.js';
 import { emailUtils } from '../utils/email.js';
 import { generateUtils, searchUtils, formatUtils } from '../utils/helpers.js';
+import razorpayService from '../services/razorpayService.js';
 
 // @desc    Get all employees
 // @route   GET /api/employees
@@ -109,7 +111,8 @@ export const createEmployee = asyncHandler(async (req, res) => {
     salary,
     personalDetails,
     reportingManager,
-    leaveBalance
+    leaveBalance,
+    bankDetails
   } = req.body;
   
   // Check if user already exists
@@ -137,14 +140,55 @@ export const createEmployee = asyncHandler(async (req, res) => {
   // Generate employee code
   const employeeCode = await generateUtils.generateEmployeeCode();
   
+  // Ensure department exists: accept either ObjectId or an object to create inline
+  let departmentId = null;
+  if (department && typeof department === 'string' && mongoose.Types.ObjectId.isValid(department)) {
+    departmentId = department;
+  } else if (department && typeof department === 'object') {
+    // Inline department creation or reuse
+    const deptName = department.name?.trim();
+    const deptDesc = department.description?.toString().trim();
+    const deptBudget = department.budget;
+
+    if (!deptName) {
+      return res.status(400).json({ success: false, message: 'Department name is required' });
+    }
+
+    // Try to find existing department by exact name (case-insensitive)
+    const existingDept = await Department.findOne({
+      name: { $regex: new RegExp('^' + deptName + '$', 'i') }
+    });
+    if (existingDept) {
+      departmentId = existingDept._id;
+    } else {
+      const newDept = await Department.create({
+        name: deptName,
+        description: deptDesc,
+        budget: deptBudget,
+        createdBy: req.user._id
+      });
+      departmentId = newDept._id;
+    }
+  } else {
+    // If department is required but not provided
+    if (!department) {
+      return res.status(400).json({ success: false, message: 'Department is required' });
+    }
+    // Invalid department format
+    return res.status(400).json({ success: false, message: 'Invalid department' });
+  }
+
+  // Normalize employment type if coming as 'permanent' from UI
+  const normalizedEmploymentType = employmentType === 'permanent' ? 'full-time' : employmentType;
+
   // Create employee record
   const employee = await Employee.create({
     user: user._id,
     employeeCode,
-    department,
+    department: departmentId,
     designation,
     dateOfJoining,
-    employmentType,
+    employmentType: normalizedEmploymentType,
     workLocation,
     salary,
     personalDetails,
@@ -154,12 +198,58 @@ export const createEmployee = asyncHandler(async (req, res) => {
       sick: 12,
       earned: 15,
       unpaid: 0
-    }
+    },
+    bankDetails
   });
   
   // Populate the created employee
   await employee.populate('user', 'name email phone');
   await employee.populate('department', 'name');
+
+  // Setup RazorpayX integration if bank details are provided
+  if (bankDetails && (bankDetails.accountNumber || bankDetails.upiId)) {
+    try {
+      // Create Razorpay contact
+      const contactData = {
+        name: user.name,
+        email: user.email,
+        phone: user.phone || '',
+        employeeId: employee._id.toString()
+      };
+
+      const contact = await razorpayService.createContact(contactData);
+      
+      // Create fund account based on payout method
+      let fundAccount = null;
+      if (bankDetails.payoutMethod === 'bank_account' && bankDetails.accountNumber) {
+        fundAccount = await razorpayService.createBankAccount(contact.id, {
+          accountHolderName: bankDetails.accountHolderName,
+          ifsc: bankDetails.ifscCode,
+          accountNumber: bankDetails.accountNumber
+        });
+      } else if (bankDetails.payoutMethod === 'upi' && bankDetails.upiId) {
+        fundAccount = await razorpayService.createUpiAccount(contact.id, {
+          upiId: bankDetails.upiId
+        });
+      }
+
+      // Update employee with RazorpayX data
+      if (contact && fundAccount) {
+        await Employee.findByIdAndUpdate(employee._id, {
+          'razorpayData.contactId': contact.id,
+          'razorpayData.fundAccountId': fundAccount.id,
+          'razorpayData.isRazorpaySetup': true,
+          'razorpayData.lastSyncedAt': new Date()
+        });
+
+        console.log(`RazorpayX setup completed for employee: ${user.name}`);
+      }
+    } catch (razorpayError) {
+      console.error('RazorpayX setup failed:', razorpayError);
+      // Don't fail employee creation if Razorpay setup fails
+      // Just log the error and continue
+    }
+  }
   
   try {
     // Send welcome email with credentials

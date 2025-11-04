@@ -92,10 +92,52 @@ const employeeSchema = new mongoose.Schema({
     }
   },
   bankDetails: {
-    accountNumber: String,
-    bankName: String,
-    ifscCode: String,
-    accountHolderName: String
+    // Bank Account Details
+    accountNumber: {
+      type: String,
+      trim: true
+    },
+    bankName: {
+      type: String,
+      trim: true
+    },
+    ifscCode: {
+      type: String,
+      trim: true,
+      uppercase: true
+    },
+    accountHolderName: {
+      type: String,
+      trim: true
+    },
+    // UPI Details
+    upiId: {
+      type: String,
+      trim: true,
+      lowercase: true
+    },
+    // Preferred payout method
+    payoutMethod: {
+      type: String,
+      enum: ['bank_account', 'upi'],
+      default: 'bank_account'
+    }
+  },
+  // RazorpayX Integration Fields
+  razorpayData: {
+    contactId: {
+      type: String,
+      sparse: true // Allows null values but maintains uniqueness for non-null values
+    },
+    fundAccountId: {
+      type: String,
+      sparse: true
+    },
+    isRazorpaySetup: {
+      type: Boolean,
+      default: false
+    },
+    lastSyncedAt: Date
   },
   personalDetails: {
     dateOfBirth: Date,

@@ -22,13 +22,9 @@ const departmentSchema = new mongoose.Schema({
     min: [0, 'Budget cannot be negative'],
     default: 0
   },
-  status: {
-    type: String,
-    enum: {
-      values: ["active", "inactive"],
-      message: 'Status must be either active or inactive'
-    },
-    default: "active"
+  isActive: {
+    type: Boolean,
+    default: true
   }
 }, { 
   timestamps: true,

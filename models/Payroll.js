@@ -166,10 +166,29 @@ const payrollSchema = new mongoose.Schema({
   },
   paymentMethod: {
     type: String,
-    enum: ["bank_transfer", "cash", "cheque"],
+    enum: ["bank_transfer", "cash", "cheque", "razorpayx"],
     default: "bank_transfer"
   },
   paymentReference: {
+    type: String
+  },
+  // RazorpayX Integration Fields
+  razorpayPayoutId: {
+    type: String,
+    sparse: true
+  },
+  payoutStatus: {
+    type: String,
+    enum: ["pending", "processing", "processed", "failed", "cancelled"],
+    default: "pending"
+  },
+  payoutInitiatedAt: {
+    type: Date
+  },
+  payoutCompletedAt: {
+    type: Date
+  },
+  payoutFailureReason: {
     type: String
   },
   remarks: {

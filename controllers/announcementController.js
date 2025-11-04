@@ -140,7 +140,7 @@ export const getAnnouncements = async (req, res) => {
 
     const announcements = await Announcement.find(filter)
       .populate('createdBy', 'name email')
-      .populate('targetDepartments', 'name code')
+      .populate('targetDepartments', 'name')
       .populate('targetEmployees', 'name email employeeId')
       .sort(sort)
       .skip(skip)
@@ -189,7 +189,7 @@ export const getAnnouncementById = async (req, res) => {
 
     const announcement = await Announcement.findById(id)
       .populate('createdBy', 'name email')
-      .populate('targetDepartments', 'name code')
+      .populate('targetDepartments', 'name')
       .populate('targetEmployees', 'name email employeeId');
 
     if (!announcement) {
@@ -257,7 +257,7 @@ export const updateAnnouncement = async (req, res) => {
       { ...updates, updatedAt: new Date() },
       { new: true, runValidators: true }
     ).populate('createdBy', 'name email')
-     .populate('targetDepartments', 'name code')
+     .populate('targetDepartments', 'name')
      .populate('targetEmployees', 'name email employeeId');
 
     logger.info(`Announcement updated successfully`, {

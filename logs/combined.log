@@ -1,0 +1,617 @@
+{
+  service: 'hrm-backend',
+  statusCode: 404,
+  error: undefined,
+  level: 'error',
+  message: 'Failed to fetch account balance:',
+  timestamp: '2025-11-04 19:48:35'
+}
+{
+  service: 'hrm-backend',
+  level: 'error',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: undefined',
+  stack: 'Error: Failed to fetch account balance: undefined\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:227:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  timestamp: '2025-11-04 19:48:35'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:19:37.496Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:19:37.503Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:49:37'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:49:37'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:49:37'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:49:37'
+}
+{
+  service: 'hrm-backend',
+  statusCode: 404,
+  error: undefined,
+  level: 'error',
+  message: 'Failed to fetch account balance:',
+  timestamp: '2025-11-04 19:49:51'
+}
+{
+  service: 'hrm-backend',
+  level: 'error',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: undefined',
+  stack: 'Error: Failed to fetch account balance: undefined\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:227:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  timestamp: '2025-11-04 19:49:51'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:21:32.888Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:21:32.897Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:51:33'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:51:33'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:51:33'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:51:33'
+}
+{
+  service: 'hrm-backend',
+  statusCode: 404,
+  error: undefined,
+  level: 'error',
+  message: 'Failed to fetch account balance:',
+  timestamp: '2025-11-04 19:51:52'
+}
+{
+  service: 'hrm-backend',
+  level: 'error',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: undefined',
+  stack: 'Error: Failed to fetch account balance: undefined\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:227:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  timestamp: '2025-11-04 19:51:52'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:23:57.122Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:23:57.131Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:53:57'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:53:57'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:53:57'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:53:57'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:25:56.361Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:25:56.373Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:55:56'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:55:56'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:55:56'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:55:56'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:29:27.175Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:29:27.183Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:59:27'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:59:27'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:59:27'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 19:59:27'
+}
+{
+  service: 'hrm-backend',
+  statusCode: 404,
+  error: undefined,
+  level: 'error',
+  message: 'Failed to fetch account balance:',
+  timestamp: '2025-11-04 19:59:37'
+}
+{
+  service: 'hrm-backend',
+  level: 'error',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: undefined',
+  stack: 'Error: Failed to fetch account balance: undefined\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:266:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  timestamp: '2025-11-04 19:59:37'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:30:47.976Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:30:47.984Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:00:48'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:00:48'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:00:48'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:00:48'
+}
+{
+  service: 'hrm-backend',
+  status: undefined,
+  response: undefined,
+  message: 'Failed to fetch account balance',
+  stack: undefined,
+  level: 'error',
+  timestamp: '2025-11-04 20:01:55'
+}
+{
+  service: 'hrm-backend',
+  level: 'error',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: unknown error',
+  stack: 'Error: Failed to fetch account balance: unknown error\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:284:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  timestamp: '2025-11-04 20:01:55'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:33:17.914Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:33:17.924Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:03:18'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:03:18'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:03:18'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:03:18'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:33:57.649Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:33:57.657Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:03:57'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:03:57'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:03:57'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:03:57'
+}
+{
+  service: 'hrm-backend',
+  status: undefined,
+  response: undefined,
+  message: 'Failed to fetch account balance',
+  stack: undefined,
+  raw: '{"statusCode":404}',
+  level: 'error',
+  timestamp: '2025-11-04 20:04:20'
+}
+{
+  service: 'hrm-backend',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: {"statusCode":404}',
+  stack: 'Error: Failed to fetch account balance: {"statusCode":404}\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:286:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  error: Error: Failed to fetch account balance: {"statusCode":404}
+      at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:286:13)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21),
+  level: 'error',
+  timestamp: '2025-11-04 20:04:20'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:22.807Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:22.816Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:22'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:22'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:22'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:22'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:25.703Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:25.711Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:25'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:25'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:25'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:25'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:50.174Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:50.180Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:50'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:50'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:50'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:50'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:51.886Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:51.890Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:51'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:51'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:51'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:51'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:53.907Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:53.911Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:53'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:53'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:53'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:53'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:57.452Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:57.455Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:57'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:57'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:57'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:57'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:59.179Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:39:59.184Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:59'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:59'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:59'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:09:59'
+}
+{
+  service: 'hrm-backend',
+  statusCode: 404,
+  error: undefined,
+  level: 'error',
+  message: 'Failed to fetch account balance:',
+  timestamp: '2025-11-04 20:10:10'
+}
+{
+  service: 'hrm-backend',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: undefined',
+  stack: 'Error: Failed to fetch account balance: undefined\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:266:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  error: Error: Failed to fetch account balance: undefined
+      at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:266:13)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21),
+  level: 'error',
+  timestamp: '2025-11-04 20:10:10'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:41:06.103Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:41:06.113Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:11:06'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:11:06'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:11:06'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:11:06'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:42:49.689Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:42:49.698Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:12:49'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:12:49'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:12:49'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:12:49'
+}
+{
+  message: 'Skipping company account balance check (RAZORPAY_CHECK_COMPANY_BALANCE not enabled)',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:13:29'
+}
+{
+  message: 'Skipping company account balance check (RAZORPAY_CHECK_COMPANY_BALANCE not enabled)',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:13:47'
+}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:44:25.640Z"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"hrm-database","timestamp":"2025-11-04T14:44:25.649Z"}
+{
+  message: '🚀 HRM System API server running on port 5000',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:14:25'
+}
+{
+  message: '🌍 Environment: development',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:14:25'
+}
+{
+  message: '📚 API Documentation: http://localhost:5000/api',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:14:25'
+}
+{
+  message: '❤️  Health Check: http://localhost:5000/health',
+  level: 'info',
+  service: 'hrm-backend',
+  timestamp: '2025-11-04 20:14:25'
+}

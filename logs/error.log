@@ -1,0 +1,137 @@
+{
+  service: 'hrm-backend',
+  statusCode: 404,
+  error: undefined,
+  level: 'error',
+  message: 'Failed to fetch account balance:',
+  timestamp: '2025-11-04 19:48:35'
+}
+{
+  service: 'hrm-backend',
+  level: 'error',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: undefined',
+  stack: 'Error: Failed to fetch account balance: undefined\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:227:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  timestamp: '2025-11-04 19:48:35'
+}
+{
+  service: 'hrm-backend',
+  statusCode: 404,
+  error: undefined,
+  level: 'error',
+  message: 'Failed to fetch account balance:',
+  timestamp: '2025-11-04 19:49:51'
+}
+{
+  service: 'hrm-backend',
+  level: 'error',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: undefined',
+  stack: 'Error: Failed to fetch account balance: undefined\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:227:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  timestamp: '2025-11-04 19:49:51'
+}
+{
+  service: 'hrm-backend',
+  statusCode: 404,
+  error: undefined,
+  level: 'error',
+  message: 'Failed to fetch account balance:',
+  timestamp: '2025-11-04 19:51:52'
+}
+{
+  service: 'hrm-backend',
+  level: 'error',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: undefined',
+  stack: 'Error: Failed to fetch account balance: undefined\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:227:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  timestamp: '2025-11-04 19:51:52'
+}
+{
+  service: 'hrm-backend',
+  statusCode: 404,
+  error: undefined,
+  level: 'error',
+  message: 'Failed to fetch account balance:',
+  timestamp: '2025-11-04 19:59:37'
+}
+{
+  service: 'hrm-backend',
+  level: 'error',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: undefined',
+  stack: 'Error: Failed to fetch account balance: undefined\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:266:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  timestamp: '2025-11-04 19:59:37'
+}
+{
+  service: 'hrm-backend',
+  status: undefined,
+  response: undefined,
+  message: 'Failed to fetch account balance',
+  stack: undefined,
+  level: 'error',
+  timestamp: '2025-11-04 20:01:55'
+}
+{
+  service: 'hrm-backend',
+  level: 'error',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: unknown error',
+  stack: 'Error: Failed to fetch account balance: unknown error\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:284:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  timestamp: '2025-11-04 20:01:55'
+}
+{
+  service: 'hrm-backend',
+  status: undefined,
+  response: undefined,
+  message: 'Failed to fetch account balance',
+  stack: undefined,
+  raw: '{"statusCode":404}',
+  level: 'error',
+  timestamp: '2025-11-04 20:04:20'
+}
+{
+  service: 'hrm-backend',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: {"statusCode":404}',
+  stack: 'Error: Failed to fetch account balance: {"statusCode":404}\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:286:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  error: Error: Failed to fetch account balance: {"statusCode":404}
+      at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:286:13)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21),
+  level: 'error',
+  timestamp: '2025-11-04 20:04:20'
+}
+{
+  service: 'hrm-backend',
+  statusCode: 404,
+  error: undefined,
+  level: 'error',
+  message: 'Failed to fetch account balance:',
+  timestamp: '2025-11-04 20:10:10'
+}
+{
+  service: 'hrm-backend',
+  message: 'Error in getAccountBalance: Failed to fetch account balance: undefined',
+  stack: 'Error: Failed to fetch account balance: undefined\n' +
+    '    at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:266:13)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21)',
+  error: Error: Failed to fetch account balance: undefined
+      at RazorpayService.getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/services/razorpayService.js:266:13)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async getAccountBalance (file:///home/rocky/Desktop/Navarna/hrm/server/controllers/payrollController.js:899:21),
+  level: 'error',
+  timestamp: '2025-11-04 20:10:10'
+}
