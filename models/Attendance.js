@@ -23,6 +23,22 @@ const attendanceSchema = new mongoose.Schema({
   },
   checkOut: { 
     type: Date,
+  // Images for punch-in / punch-out (Cloudinary URLs)
+  punchInImageUrl: {
+    type: String
+  },
+  punchOutImageUrl: {
+    type: String
+  },
+  // Session status for the day (separate from final attendance status)
+  sessionStatus: {
+    type: String,
+    enum: {
+      values: ['idle', 'active', 'completed', 'auto-stopped'],
+      message: 'Session status must be idle, active, completed, or auto-stopped'
+    },
+    default: 'idle'
+  },
     validate: {
       validator: function(v) {
         // Check-out should be after check-in and within reasonable time

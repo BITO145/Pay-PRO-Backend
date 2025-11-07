@@ -177,14 +177,28 @@ export const auditLog = (action, targetModel) => {
 
       // Only log if we have required fields
       if (req.user || (action.includes('login') && res.statusCode < 400)) {
+        // Map HTTP method to allowed AuditLog.method enum
+        const mapMethod = () => {
+          if (action && /export/i.test(action)) return 'EXPORT';
+          if (action && /login/i.test(action)) return 'LOGIN';
+          if (action && /logout/i.test(action)) return 'LOGOUT';
+          switch (req.method) {
+            case 'GET': return 'READ';
+            case 'POST': return 'CREATE';
+            case 'PUT':
+            case 'PATCH': return 'UPDATE';
+            case 'DELETE': return 'DELETE';
+            default: return 'READ';
+          }
+        };
+
         const logData = {
           user: req.user ? req.user._id : null,
           action,
           targetModel,
           targetId: req.user ? req.user._id : new mongoose.Types.ObjectId(), // Use user's ID for login
           targetName: req.body.name || req.body.title || req.body.email || null,
-          method: action.includes('login') || action.includes('logout') ? 
-                 (action.includes('login') ? 'LOGIN' : 'LOGOUT') : req.method,
+          method: mapMethod(),
           endpoint: req.originalUrl,
           ipAddress: req.ip || req.connection.remoteAddress,
           userAgent: req.get('User-Agent'),

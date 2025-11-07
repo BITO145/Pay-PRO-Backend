@@ -3,11 +3,25 @@ import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import { v2 as cloudinary } from 'cloudinary';
 import path from 'path';
 
-// Configure Cloudinary
+// Configure Cloudinary (with friendly env fallbacks and validation)
+const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_NAME;
+const API_KEY = process.env.CLOUDINARY_API_KEY;
+const API_SECRET = process.env.CLOUDINARY_API_SECRET;
+
+if (!CLOUD_NAME || !API_KEY || !API_SECRET) {
+  // Do not throw at import time, but make misconfiguration obvious in logs
+  console.error('[Cloudinary] Missing configuration. Expected env vars: CLOUDINARY_CLOUD_NAME (or CLOUDINARY_NAME), CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET');
+}
+
+// Helpful guard: cloud name should not be numeric; if it looks like a numeric API key, log a hint
+if (CLOUD_NAME && /^\d+$/.test(CLOUD_NAME)) {
+  console.error(`[Cloudinary] CLOUDINARY_CLOUD_NAME appears numeric ('${CLOUD_NAME}'). Did you accidentally place API key in CLOUDINARY_CLOUD_NAME?`);
+}
+
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: CLOUD_NAME,
+  api_key: API_KEY,
+  api_secret: API_SECRET,
 });
 
 // Create Cloudinary storage for different file types
@@ -98,6 +112,26 @@ export const uploadLeaveAttachment = multer({
   ])
 });
 
+// Attendance images (punch-in / punch-out)
+const attendanceStorage = createCloudinaryStorage('attendance-images', ['jpg', 'jpeg', 'png']);
+
+export const uploadAttendanceImage = multer({
+  storage: attendanceStorage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: fileFilter(['image/jpeg', 'image/jpg', 'image/png'])
+});
+
+// Attendance images - memory storage variant for pre-check + manual upload
+export const parseAttendanceForm = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: fileFilter(['image/jpeg', 'image/jpg', 'image/png'])
+});
+
 // Generic file upload for multiple files
 export const uploadMultiple = (fieldName, maxCount = 5, folder = 'general') => {
   const storage = createCloudinaryStorage(folder, ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx']);
@@ -172,6 +206,8 @@ export default {
   uploadDocument,
   uploadAnnouncementAttachment,
   uploadLeaveAttachment,
+  uploadAttendanceImage,
+  parseAttendanceForm,
   uploadMultiple,
   handleMulterError,
   deleteFromCloudinary,

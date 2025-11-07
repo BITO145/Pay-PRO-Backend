@@ -7,6 +7,7 @@ import { dataLogger } from '../config/logger.js';
 import { emailUtils } from '../utils/email.js';
 import { generateUtils, searchUtils, formatUtils } from '../utils/helpers.js';
 import razorpayService from '../services/razorpayService.js';
+import bcryptjs from 'bcryptjs';
 
 // @desc    Get all employees
 // @route   GET /api/employees
@@ -125,13 +126,13 @@ export const createEmployee = asyncHandler(async (req, res) => {
   }
   
   // Generate temporary password
-  const tempPassword = generateUtils.generatePassword();
+  const hashedPassword = await bcryptjs.hash(phone, 10);
   
   // Create user account
   const user = await User.create({
     name,
     email,
-    password: tempPassword,
+    password: hashedPassword,
     role: 'employee',
     phone,
     address

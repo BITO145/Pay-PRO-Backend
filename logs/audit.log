@@ -135,3 +135,48 @@
   level: 'error',
   timestamp: '2025-11-04 20:10:10'
 }
+{
+  service: 'hrm-backend',
+  email: 'bastapureganesh21@gmail.com',
+  ip: '::1',
+  reason: 'Invalid password',
+  event: 'LOGIN_FAILURE',
+  level: 'warn',
+  message: 'User login failed',
+  timestamp: '2025-11-06 21:17:16'
+}
+{
+  error: {
+    message: 'Invalid cloud_name 688668778152521',
+    name: 'Error',
+    http_code: 401
+  },
+  level: 'error',
+  message: 'unhandledRejection: Invalid cloud_name 688668778152521\n  No stack trace',
+  stack: undefined,
+  rejection: true,
+  date: 'Thu Nov 06 2025 21:22:51 GMT+0530 (India Standard Time)',
+  process: {
+    pid: 27559,
+    uid: 1000,
+    gid: 1000,
+    cwd: '/home/rocky/Desktop/Navarna/hrm/server',
+    execPath: '/home/rocky/.nvm/versions/node/v20.19.3/bin/node',
+    version: 'v20.19.3',
+    argv: [
+      '/home/rocky/.nvm/versions/node/v20.19.3/bin/node',
+      '/home/rocky/Desktop/Navarna/hrm/server/server.js'
+    ],
+    memoryUsage: {
+      rss: 98881536,
+      heapTotal: 38920192,
+      heapUsed: 36680840,
+      external: 22095115,
+      arrayBuffers: 18545315
+    }
+  },
+  os: { loadavg: [ 1.03, 1.22, 1.16 ], uptime: 22508.14 },
+  trace: [],
+  service: 'hrm-backend',
+  timestamp: '2025-11-06 21:22:51'
+}

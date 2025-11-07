@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   markAttendance,
+  preCheckBeforeUpload,
   getAttendance,
   getAttendanceById,
   updateAttendance,
@@ -12,6 +13,7 @@ import {
 } from '../controllers/attendanceController.js';
 import { protect, restrictTo, isHROrAdmin, auditLog } from '../middleware/auth.js';
 import { validate, attendanceSchemas } from '../middleware/validation.js';
+import { parseAttendanceForm, handleMulterError } from '../middleware/upload.js';
 
 const router = express.Router();
 
@@ -21,6 +23,13 @@ router.use(protect);
 // Employee routes
 router.post('/mark', 
   restrictTo('employee'),
+  // Parse text fields first to read `type` without uploading image
+  // Use memory storage to accept both fields and file without external upload
+  parseAttendanceForm.single('image'),
+  preCheckBeforeUpload,
+  // Only upload if pre-check passed
+  // No external upload here; controller will upload buffer to Cloudinary after checks
+  handleMulterError,
   validate(attendanceSchemas.checkIn), // Can be used for both check-in and check-out
   auditLog('mark_attendance', 'Attendance'),
   markAttendance
